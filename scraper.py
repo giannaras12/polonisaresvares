@@ -146,7 +146,9 @@ class RTanksScraper:
             if clan_match:
                 potential_clan = clan_match.group(1).strip()
                 if potential_clan and potential_clan.lower() not in ['online', 'offline', 'premium']:
-                    player_data['clan'] = potential_clan
+                    # Decode HTML entities in clan names
+                    import html
+                    player_data['clan'] = html.unescape(potential_clan)
                     logger.info(f"Found clan: {player_data['clan']}")
             
             # Parse online status from the small circle near player name
