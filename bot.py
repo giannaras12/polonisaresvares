@@ -78,7 +78,7 @@ class RTanksBot(commands.Bot):
             if not player_data:
                 embed = discord.Embed(
                     title="❌ Player Not Found",
-                    description=f"Player `{username}` not found. If you believe the player name is valid, message xtop12.",
+                    description=f"Player `{username}` not found,try again.",
                     color=0xff0000
                 )
                 await interaction.followup.send(embed=embed)
@@ -120,7 +120,7 @@ class RTanksBot(commands.Bot):
             if not player_data:
                 embed = discord.Embed(
                     title="❌ Игрок не найден",
-                    description=f"Игрок `{username}` не найден. Если вы уверены, что имя указано верно, напишите xtop12.",
+                    description=f"Игрок `{username}` не найден, попробуйте еще раз.",
                     color=0xff0000
                 )
                 await interaction.followup.send(embed=embed)
