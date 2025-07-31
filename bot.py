@@ -433,6 +433,7 @@ class RTanksBot(commands.Bot):
         profile_url = f"{RTANKS_BASE_URL}/user/{encoded_username}"
         title_display = player_data['username']
                 # Equipment - show basic or full based on expanded state
+                # Equipment - show basic or full based on expanded state
         if player_data['equipment']:
             equipment_text = ""
 
