@@ -505,6 +505,7 @@ class RTanksBot(commands.Bot):
         )
 
         # Equipment - show basic or full based on expanded state
+                # Equipment - show basic or full based on expanded state
         if player_data['equipment']:
             equipment_text = ""
 
@@ -521,12 +522,10 @@ class RTanksBot(commands.Bot):
                     equipment_text += f"**Hull:** {equipped_hulls[0]}\n"
 
                 if equipped_protections:
-                    # Show first 3 equipped protections
                     current_paints = equipped_protections[:3]
                     paints_text = ", ".join(current_paints)
                     equipment_text += f"**Paints:** {paints_text}"
 
-                # Show total counts
                 total_turrets = len(player_data['equipment'].get('turrets', []))
                 total_hulls = len(player_data['equipment'].get('hulls', []))
                 total_protections = len(player_data['equipment'].get('protections', []))
@@ -534,9 +533,7 @@ class RTanksBot(commands.Bot):
                 if total_turrets > 0 or total_hulls > 0 or total_protections > 0:
                     if equipment_text:
                         equipment_text += "\n\n"
-
             else:
-                # Show all equipment
                 if player_data['equipment'].get('turrets'):
                     turrets = ", ".join(player_data['equipment']['turrets'])
                     equipment_text += f"**Turrets:** {turrets}\n"
@@ -549,13 +546,13 @@ class RTanksBot(commands.Bot):
                     protections = ", ".join(player_data['equipment']['protections'])
                     equipment_text += f"**Protections:** {protections}"
 
-           if equipment_text:
-               field_title = "Equipment" if expanded else "Equipped"
-               embed.add_field(
-                   name=field_title,
-                   value=equipment_text,
-                   inline=False
-               )
+            if equipment_text:
+                field_title = "Equipment" if expanded else "Equipped"
+                embed.add_field(
+                    name=field_title,
+                    value=equipment_text,
+                    inline=False
+                )
  
         embed.set_footer(text="Data from ratings.ranked-rtanks.online")
 
