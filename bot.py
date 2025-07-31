@@ -432,81 +432,54 @@ class RTanksBot(commands.Bot):
         encoded_username = urllib.parse.quote(player_data['username'])
         profile_url = f"{RTANKS_BASE_URL}/user/{encoded_username}"
         title_display = player_data['username']
-        if player_data.get('clan'):
-            title_display = f"{player_data['username']} [{player_data['clan']}]"
-
-        embed = discord.Embed(
-            title=title_display,
-            url=profile_url,
-            description=f"**Activity:** {activity_status}",
-            color=0x00ff00 if player_data['is_online'] else 0x808080,
-            timestamp=datetime.now()
-        )
-
-        # Player rank and basic info - make rank emoji bigger
-        rank_emoji = get_rank_emoji(player_data['rank'], premium=player_data.get('premium', False))
-
-        # Extract the emoji ID from the custom Discord emoji and use it as thumbnail
-        import re
-        emoji_match = re.search(r':(\d+)>', rank_emoji)
-        if emoji_match:
-            emoji_id = emoji_match.group(1)
-            emoji_url = f"https://cdn.discordapp.com/emojis/{emoji_id}.png"
-            embed.set_thumbnail(url=emoji_url)
-
-        # Rank field with just the rank name, no emoji
-        embed.add_field(
-            name="Rank",
-            value=f"**{player_data['rank']}**",
-            inline=True
-        )
-
-        # Experience - show current/max format like "105613/125000"
-        if 'max_experience' in player_data and player_data['max_experience']:
-            exp_display = f"{format_exact_number(player_data['experience'])}/{format_exact_number(player_data['max_experience'])}"
-        else:
-            exp_display = f"{format_exact_number(player_data['experience'])}"
-
-        embed.add_field(
-            name="Experience",
-            value=exp_display,
-            inline=True
-        )
-
-        # Premium status - always show premium emoji
-        premium_status = "Yes" if player_data['premium'] else "No"
-        embed.add_field(
-            name="Premium",
-            value=f"{PREMIUM_EMOJI} {premium_status}",
-            inline=True
-        )
-
-        # Combat Stats - remove non-custom emojis
-        combat_stats = (
-            f"**Kills:** {format_exact_number(player_data['kills'])}\n"
-            f"**Deaths:** {format_exact_number(player_data['deaths'])}\n"
-            f"**K/D:** {player_data['kd_ratio']}"
-        )
-        embed.add_field(
-            name="Combat Stats",
-            value=combat_stats,
-            inline=True
-        )
-
-        # Other Stats - always show gold box emoji
-        other_stats = (
-            f"{GOLD_BOX_EMOJI} **Gold Boxes:** {player_data['gold_boxes']}\n"
-            f"**Group:** {player_data['group']}"
-        )
-        embed.add_field(
-            name="Other Stats",
-            value=other_stats,
-            inline=True
-        )
-
-        # Equipment - show basic or full based on expanded state
+                # Equipment - show basic or full based on expanded state
         if player_data['equipment']:
             equipment_text = ""
+
+            if not expanded:
+                # Show only actually equipped items
+                equipped_turrets = player_data['equipment'].get('equipped_turrets', [])
+                equipped_hulls = player_data['equipment'].get('equipped_hulls', [])
+                equipped_protections = player_data['equipment'].get('equipped_protections', [])
+
+                if equipped_turrets:
+                    equipment_text += f"**Turret:** {equipped_turrets[0]}\n"
+
+                if equipped_hulls:
+                    equipment_text += f"**Hull:** {equipped_hulls[0]}\n"
+
+                if equipped_protections:
+                    current_paints = equipped_protections[:3]
+                    paints_text = ", ".join(current_paints)
+                    equipment_text += f"**Paints:** {paints_text}"
+
+                total_turrets = len(player_data['equipment'].get('turrets', []))
+                total_hulls = len(player_data['equipment'].get('hulls', []))
+                total_protections = len(player_data['equipment'].get('protections', []))
+
+                if total_turrets > 0 or total_hulls > 0 or total_protections > 0:
+                    if equipment_text:
+                        equipment_text += "\n\n"
+            else:
+                if player_data['equipment'].get('turrets'):
+                    turrets = ", ".join(player_data['equipment']['turrets'])
+                    equipment_text += f"**Turrets:** {turrets}\n"
+
+                if player_data['equipment'].get('hulls'):
+                    hulls = ", ".join(player_data['equipment']['hulls'])
+                    equipment_text += f"**Hulls:** {hulls}\n"
+
+                if player_data['equipment'].get('protections'):
+                    protections = ", ".join(player_data['equipment']['protections'])
+                    equipment_text += f"**Protections:** {protections}"
+
+            if equipment_text:
+                field_title = "Equipment" if expanded else "Equipped"
+                embed.add_field(
+                    name=field_title,
+                    value=equipment_text,
+                    inline=False
+                )
 
             if not expanded:
                 # Show only actually equipped items
