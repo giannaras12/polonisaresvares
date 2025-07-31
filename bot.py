@@ -550,12 +550,12 @@ class RTanksBot(commands.Bot):
                     equipment_text += f"**Protections:** {protections}"
 
            if equipment_text:
-                field_title = "Equipment" if expanded else "Equipped"
-                    embed.add_field(
-                    name=field_title,
-                    value=equipment_text,
-                    inline=False
-                )
+               field_title = "Equipment" if expanded else "Equipped"
+               embed.add_field(
+                   name=field_title,
+                   value=equipment_text,
+                   inline=False
+               )
  
         embed.set_footer(text="Data from ratings.ranked-rtanks.online")
 
