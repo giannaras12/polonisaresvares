@@ -485,14 +485,13 @@ class RTanksScraper:
                     logger.info(f"Found gold boxes: {player_data['gold_boxes']} from pattern {pattern}")
                     break
 
-            # Parse equipment (looking for "Установленный Да")
             turret_mapping = {
                 'Смоки': 'Smoky', 'Рельса': 'Rail', 'Рикошет': 'Ricochet', 
-                'Изида': 'Isida', 'Фриз': 'Freeze',
+                'Изида': 'Isida', 'Фриз': 'Freeze', 'Огнемет': 'Flamethrower',
                 'Гром': 'Thunder', 'Молот': 'Hammer', 'Вулкан': 'Vulcan',
                 'Твинс': 'Twins', 'Шафт': 'Shaft', 'Страйкер': 'Striker'
-                # Removed 'Огнемет': 'Flamethrower' - appears for everyone but not actually owned
             }
+
 
             hull_mapping = {
                 'Хантер': 'Hunter', 'Мамонт': 'Mammoth', 'Титан': 'Titan',
