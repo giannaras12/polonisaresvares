@@ -558,16 +558,16 @@ class RTanksBot(commands.Bot):
 
         return embed
 
-       async def _create_player_embed_russian(self, player_data, expanded=False):
+     async def _create_player_embed_russian(self, player_data, expanded=False):
         """Create a formatted embed for player data in Russian."""
-        import urllib.parse
-        import re
-
         # Create embed with activity status in Russian
         activity_status = "В сети" if player_data['is_online'] else "Не в сети"
+        # URL encode the username to handle special characters
+        import urllib.parse
         encoded_username = urllib.parse.quote(player_data['username'])
         profile_url = f"{RTANKS_BASE_URL}/user/{encoded_username}"
         title_display = player_data['username']
+                # Equipment section in Russian - show basic or full based on expanded state
         if player_data.get('equipment'):
             equipment_text = ""
 
@@ -676,46 +676,8 @@ class RTanksBot(commands.Bot):
                     inline=False
                 )
 
-            if not expanded:
-                equipped_turrets = player_data['equipment'].get('equipped_turrets', [])
-                equipped_hulls = player_data['equipment'].get('equipped_hulls', [])
-                equipped_protections = player_data['equipment'].get('equipped_protections', [])
-
-                if equipped_turrets:
-                    russian_turret = self._translate_equipment_to_russian(equipped_turrets[0])
-                    equipment_text += f"**Башня:** {russian_turret}\n"
-
-                if equipped_hulls:
-                    russian_hull = self._translate_equipment_to_russian(equipped_hulls[0])
-                    equipment_text += f"**Корпус:** {russian_hull}\n"
-
-                if equipped_protections:
-                    paints = equipped_protections[:3]
-                    russian_paints = [self._translate_equipment_to_russian(p) for p in paints]
-                    paints_text = ", ".join(russian_paints)
-                    equipment_text += f"**Краски:** {paints_text}"
-
-            else:
-                if player_data['equipment'].get('turrets'):
-                    russian_turrets = [self._translate_equipment_to_russian(t) for t in player_data['equipment']['turrets']]
-                    turrets = ", ".join(russian_turrets)
-                    equipment_text += f"**Башни:** {turrets}\n"
-
-                if player_data['equipment'].get('hulls'):
-                    russian_hulls = [self._translate_equipment_to_russian(h) for h in player_data['equipment']['hulls']]
-                    hulls = ", ".join(russian_hulls)
-                    equipment_text += f"**Корпуса:** {hulls}\n"
-
-                if player_data['equipment'].get('protections'):
-                    russian_protections = [self._translate_equipment_to_russian(p) for p in player_data['equipment']['protections']]
-                    protections = ", ".join(russian_protections)
-                    equipment_text += f"**Защита:** {protections}"
-
-            if equipment_text:
-                field_title = "Снаряжение" if expanded else "Экипировано"
-                embed.add_field(name=field_title, value=equipment_text, inline=False)
-
         embed.set_footer(text="Data from ratings.ranked-rtanks.online")
+
         return embed
 
     def _translate_rank_to_russian(self, rank):
