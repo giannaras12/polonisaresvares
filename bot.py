@@ -669,11 +669,11 @@ class RTanksBot(commands.Bot):
                     protections = ", ".join(russian_protections)
                     equipment_text += f"**Защита:** {protections}"
 
-            if equipment_text:
+             if equipment_text:
                 embed.add_field(
-                    name="Снаряжение",
-                    value=equipment_text,
-                    inline=False
+                   name="Снаряжение",
+                   value=equipment_text,
+                   inline=False
                 )
 
         embed.set_footer(text="Data from ratings.ranked-rtanks.online")
