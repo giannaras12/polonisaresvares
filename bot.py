@@ -549,13 +549,14 @@ class RTanksBot(commands.Bot):
                     protections = ", ".join(player_data['equipment']['protections'])
                     equipment_text += f"**Protections:** {protections}"
 
-            if equipment_text:
-                embed.add_field(
-                    name="Equipment",
+           if equipment_text:
+                field_title = "Equipment" if expanded else "Equipped"
+                    embed.add_field(
+                    name=field_title,
                     value=equipment_text,
                     inline=False
                 )
-
+ 
         embed.set_footer(text="Data from ratings.ranked-rtanks.online")
 
         return embed
