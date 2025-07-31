@@ -487,7 +487,7 @@ class RTanksScraper:
 
             turret_mapping = {
                 'Смоки': 'Smoky', 'Рельса': 'Rail', 'Рикошет': 'Ricochet', 
-                'Изида': 'Isida', 'Фриз': 'Freeze', 'Огнемет': 'Flamethrower',
+                'Изида': 'Isida', 'Фриз': 'Freeze', 'Огнемет': 'Firebird',
                 'Гром': 'Thunder', 'Молот': 'Hammer', 'Вулкан': 'Vulcan',
                 'Твинс': 'Twins', 'Шафт': 'Shaft', 'Страйкер': 'Striker'
             }
