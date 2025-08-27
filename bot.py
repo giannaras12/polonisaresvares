@@ -1161,7 +1161,7 @@ class RTanksBot(commands.Bot):
                             await channel.edit(name=new_name)
 
                         # Send a message with the online count
-                        await channel.send(f"🌐 **{count} players online**")
+                        await channel.send(f" **{count} players online**")
 
                     except Exception as e:
                         logger.warning(f"Failed to update channel for {channel_id}: {e}")
