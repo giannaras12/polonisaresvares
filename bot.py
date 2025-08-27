@@ -1139,6 +1139,7 @@ class RTanksBot(commands.Bot):
 
 
     async def _update_online_status_task(self):
+        """Background task to update bot status with number of online players."""
         await self.wait_until_ready()
         while not self.is_closed():
             try:
@@ -1154,11 +1155,16 @@ class RTanksBot(commands.Bot):
                 channel = self.get_channel(channel_id)
                 if channel:
                     try:
+                        # Change channel name
                         new_name = f"online_players: {count}"
                         if channel.name != new_name:  # only change if different
                             await channel.edit(name=new_name)
+
+                        # Send a message with the online count
+                        await channel.send(f"🌐 **{count} players online**")
+
                     except Exception as e:
-                        logger.warning(f"Failed to update channel name for {channel_id}: {e}")
+                        logger.warning(f"Failed to update channel for {channel_id}: {e}")
 
             except Exception as e:
                 logger.warning(f"Failed to update online player count: {e}")
