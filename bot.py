@@ -1138,8 +1138,7 @@ class RTanksBot(commands.Bot):
         logger.error(f"Command error: {error}")
 
 
-        async def _update_online_status_task(self):
-        """Background task to update bot status with number of online players."""
+            async def _update_online_status_task(self):
         await self.wait_until_ready()
         while not self.is_closed():
             try:
