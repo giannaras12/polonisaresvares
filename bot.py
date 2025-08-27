@@ -1138,14 +1138,27 @@ class RTanksBot(commands.Bot):
         logger.error(f"Command error: {error}")
 
 
-    async def _update_online_status_task(self):
+        async def _update_online_status_task(self):
         """Background task to update bot status with number of online players."""
         await self.wait_until_ready()
         while not self.is_closed():
             try:
                 count = await self.scraper.get_online_players_count()
-                activity = discord.Activity(type=discord.ActivityType.watching, name=f"{count} players online")
+                activity = discord.Activity(
+                    type=discord.ActivityType.watching,
+                    name=f"{count} players online"
+                )
                 await self.change_presence(activity=activity)
+
+                # Send the online count to a specific channel
+                channel_id = 1410263770105778316  # Replace with your channel ID
+                channel = self.get_channel(channel_id)
+                if channel:
+                    try:
+                        await channel.send(f"🌐 **{count} players online**")
+                    except Exception as e:
+                        logger.warning(f"Failed to send message to channel {channel_id}: {e}")
+
             except Exception as e:
                 logger.warning(f"Failed to update online player count: {e}")
             await asyncio.sleep(30)
