@@ -1138,7 +1138,7 @@ class RTanksBot(commands.Bot):
         logger.error(f"Command error: {error}")
 
 
-            async def _update_online_status_task(self):
+                async def _update_online_status_task(self):
         await self.wait_until_ready()
         while not self.is_closed():
             try:
@@ -1149,18 +1149,25 @@ class RTanksBot(commands.Bot):
                 )
                 await self.change_presence(activity=activity)
 
-                # Send the online count to a specific channel
+                # Update the channel name with the online count
                 channel_id = 1410263770105778316  # Replace with your channel ID
                 channel = self.get_channel(channel_id)
                 if channel:
                     try:
-                        await channel.send(f"🌐 **{count} players online**")
+                        new_name = f"online_players: {count}"
+                        if channel.name != new_name:  # only change if different
+                            await channel.edit(name=new_name)
                     except Exception as e:
-                        logger.warning(f"Failed to send message to channel {channel_id}: {e}")
+                        logger.warning(f"Failed to update channel name for {channel_id}: {e}")
 
             except Exception as e:
                 logger.warning(f"Failed to update online player count: {e}")
             await asyncio.sleep(30)
+
+    async def close(self):
+        """Clean up when bot is closing."""
+        await self.scraper.close()
+        await super().close()
 
     async def close(self):
         """Clean up when bot is closing."""
