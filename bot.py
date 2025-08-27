@@ -1168,8 +1168,3 @@ class RTanksBot(commands.Bot):
         """Clean up when bot is closing."""
         await self.scraper.close()
         await super().close()
-
-    async def close(self):
-        """Clean up when bot is closing."""
-        await self.scraper.close()
-        await super().close()
